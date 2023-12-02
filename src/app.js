@@ -1,45 +1,48 @@
 const express = require("express");
+const pastes = require("./data/pastes-data");
 const app = express();
 
-// Router-level middleware
-const checkForAbbreviationLength = (req, _, next) => {
-  const abbreviation = req.params.abbreviation;
-  if (abbreviation.length !== 2) {
-    next(`State abbreviation "${abbreviation}" is invalid.`);
-  } else {
-    next();
-  }
-};
+app.use(express.json());
 
-// Routes
-app.get(
-  "/states/:abbreviation",
-  checkForAbbreviationLength,
-  // eslint-disable-next-line no-unused-vars
-  (req, res, _) => {
-    res.send(`${req.params.abbreviation} is a nice state, I'd like to visit.`);
-  },
-);
-
-app.get(
-  "/travel/:abbreviation",
-  checkForAbbreviationLength,
-  // eslint-disable-next-line no-unused-vars
-  (req, res, _) => {
-    res.send(`Enjoy your trip to ${req.params.abbreviation}!`);
-  },
-);
-
-// Error handlers
-// eslint-disable-next-line no-unused-vars
-app.use((req, res, _) => {
-  res.send(`The route ${req.path} does not exist!`);
+app.get("/pastes", (_req, res) => {
+  res.json({ data: pastes });
 });
 
+// Variable to hold the next ID
+// Because some IDs may already be used, find the largest assigned ID
+let lastPasteId = pastes.reduce((maxId, paste) => Math.max(maxId, paste.id), 0);
+
 // eslint-disable-next-line no-unused-vars
-app.use((err, _, res, _1) => {
-  console.error(err);
-  res.send(err);
+app.post("/pastes", (req, res, _next) => {
+  const { data: { name, syntax, exposure, expiration, text, user_id } = {} } =
+    req.body;
+  if (text) {
+    const newPaste = {
+      id: ++lastPasteId, // Increment last ID, then assign as the current ID
+      name,
+      syntax,
+      exposure,
+      expiration,
+      text,
+      user_id,
+    };
+    pastes.push(newPaste);
+    res.status(201).json({ data: newPaste });
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Not found handler
+app.use((request, _response, next) => {
+  next(`Not found: ${request.originalUrl}`);
+});
+
+// Error handler
+// eslint-disable-next-line no-unused-vars
+app.use((error, _request, response, _next) => {
+  console.error(error);
+  response.send(error);
 });
 
 module.exports = app;
