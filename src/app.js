@@ -8,10 +8,6 @@ app.use(express.json());
 app.use(cors({ origin: /goeseveron\.com/ }));
 
 app.use("/shows", showsRouter);
-app.get("/", (_req, res, next) => {
-  res.status(200).send("Hello World!");
-  next();
-});
 
 // Not found handler
 app.use((req, _res, next) => {
