@@ -8,7 +8,8 @@
     "start:dev": "nodemon src/server.js",
     "test": "jest",
     "test:watch": "jest --watch --verbose",
-    "commit": "git cz"
+    "commit": "git cz",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "Sterling Watts",
