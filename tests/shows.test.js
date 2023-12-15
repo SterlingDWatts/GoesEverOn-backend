@@ -12,7 +12,7 @@ describe("path /shows", () => {
 
   afterAll(() => knex.destroy());
 
-  describe("GET method", () => {
+  describe("GET /shows method", () => {
     describe("given there are no shows in the database", () => {
       it("returns with 200 and an empty array", async () => {
         const response = await request(app).get("/shows");
@@ -41,7 +41,7 @@ describe("path /shows", () => {
     });
   });
 
-  describe("POST method", () => {
+  describe("POST /shows method", () => {
     it("returns with 400 if invalid data is sent", async () => {
       const invalidShow = {
         show_name: "The Wheel of Time",
@@ -101,6 +101,29 @@ describe("path /shows", () => {
           newShow.show_description,
         );
         expect(response.body.data[4].show_year).toBe(newShow.show_year);
+      });
+    });
+  });
+
+  describe("GET /shows/:showId method", () => {
+    describe("given there are no shows in the database", () => {
+      it("returns with 404", async () => {
+        const response = await request(app).get("/shows/1");
+        expect(response.status).toBe(404);
+        expect(response.body.error).toBe("Show cannot be found.");
+      });
+    });
+
+    describe("given there are shows in the database", () => {
+      beforeEach(() => helpers.seedShowsTable(knex, testShows));
+      it("returns with 200 and the show", async () => {
+        const response = await request(app).get("/shows/1");
+        expect(response.status).toBe(200);
+        expect(response.body.data.show_name).toBe(testShows[0].show_name);
+        expect(response.body.data.show_description).toBe(
+          testShows[0].show_description,
+        );
+        expect(response.body.data.show_year).toBe(testShows[0].show_year);
       });
     });
   });

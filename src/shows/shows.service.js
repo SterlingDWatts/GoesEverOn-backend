@@ -11,7 +11,12 @@ function create(show) {
     .then((createdRecords) => createdRecords[0]);
 }
 
+function read(show_id) {
+  return knex("shows").select("*").where({ show_id }).first();
+}
+
 module.exports = {
   list,
   create,
+  read,
 };

@@ -32,6 +32,22 @@ async function create(req, res) {
   res.status(201).json({ data });
 }
 
+async function showExists(req, res, next) {
+  const show = await showsService.read(req.params.show_id);
+  if (show) {
+    res.locals.show = show;
+    return next();
+  }
+
+  next({ status: 404, message: `Show cannot be found.` });
+}
+
+async function read(req, res) {
+  const { show_id } = req.params;
+  const data = await showsService.read(show_id);
+  res.status(200).json({ data });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
@@ -39,4 +55,5 @@ module.exports = {
     hasRequiredProperties,
     asyncErrorBoundary(create),
   ],
+  read: [asyncErrorBoundary(showExists), asyncErrorBoundary(read)],
 };
