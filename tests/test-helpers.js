@@ -23,23 +23,47 @@ function makeShowsArray() {
   ];
 }
 
+function makeUsersArray() {
+  return [
+    { user_email: "test1@gmail.com", user_sub: "12", user_role: "partner" },
+  ];
+}
+
+function makeHashedUsersArray(users) {
+  return users.map((user) => ({
+    ...user,
+    user_sub: "$2a$12$6LMNoawvxlTUmvObEaH97.VuKgJkI4B44NzX53DP2yNVJipMgkMYC",
+  }));
+}
+
 function makeGoesEverOnFixtures() {
   const testShows = makeShowsArray();
+  const testUsers = makeUsersArray();
+  const testHashedUsers = makeHashedUsersArray(testUsers);
   return {
     testShows,
+    testUsers,
+    testHashedUsers,
   };
 }
 
 function cleanTables(knex) {
-  return knex.raw(`TRUNCATE TABLE shows RESTART IDENTITY CASCADE`);
+  return knex
+    .raw(`TRUNCATE TABLE users RESTART IDENTITY CASCADE`)
+    .then(() => knex.raw(`TRUNCATE TABLE shows RESTART IDENTITY CASCADE`));
 }
 
 function seedShowsTable(knex, shows) {
   return knex("shows").insert(shows);
 }
 
+function seedUsersTable(knex, users) {
+  return knex("users").insert(users);
+}
+
 module.exports = {
   makeGoesEverOnFixtures,
   cleanTables,
   seedShowsTable,
+  seedUsersTable,
 };

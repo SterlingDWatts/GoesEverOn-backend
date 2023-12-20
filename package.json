@@ -15,13 +15,15 @@
   "author": "Sterling Watts",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.17.1",
     "knex": "^3.1.0",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "xss": "^1.0.14"
   },
   "devDependencies": {
     "eslint": "^8.55.0",

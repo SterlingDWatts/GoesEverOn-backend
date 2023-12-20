@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const showsRouter = require("./shows/shows.router");
+const authRouter = require("./auth/auth.router");
 
 const app = express();
 app.use(express.json());
@@ -8,6 +9,7 @@ app.use(express.json());
 app.use(cors({ origin: /goeseveron\.com/ }));
 
 app.use("/shows", showsRouter);
+app.use("/auth", authRouter);
 
 // Not found handler
 app.use((req, _res, next) => {
