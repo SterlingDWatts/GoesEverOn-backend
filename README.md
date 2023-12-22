@@ -9,8 +9,10 @@ This is the backend for the Goes Ever On site. It is a REST API built with Node,
 1. /shows
    - GET: returns all shows
    - POST: adds a new show
-1. /shows/:showId
+2. /shows/:showId
    - GET: returns a show by id
+3. /auth/login
+   - POST: logs in a user
 
 ## Scripts
 
