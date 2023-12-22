@@ -49,11 +49,12 @@ describe("path /auth", () => {
         expect(response.status).toBe(401);
       });
 
-      it("returns with 200 and if login is successful", async () => {
+      it("returns with 200 and the user's role if login is successful", async () => {
         const response = await request(app)
           .post("/auth/login")
           .send({ data: testUsers[0] });
         expect(response.status).toBe(200);
+        expect(response.body.data.role).toBe("partner");
       });
     });
   });

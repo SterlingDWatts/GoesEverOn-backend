@@ -28,7 +28,8 @@ async function userSubMatches(req, res, next) {
 }
 
 async function validate(_req, res) {
-  res.status(200).send("Validated.");
+  const data = { role: res.locals.user.user_role };
+  res.status(200).json({ data });
 }
 
 module.exports = {
