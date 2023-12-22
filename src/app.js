@@ -1,14 +1,15 @@
 const express = require("express");
-const app = express();
+const cors = require("cors");
 const showsRouter = require("./shows/shows.router");
+const authRouter = require("./auth/auth.router");
 
+const app = express();
 app.use(express.json());
 
+app.use(cors({ origin: /goeseveron\.com/ }));
+
 app.use("/shows", showsRouter);
-app.get("/", (_req, res, next) => {
-  res.status(200).send("Hello World!");
-  next();
-});
+app.use("/auth", authRouter);
 
 // Not found handler
 app.use((req, _res, next) => {
