@@ -1,4 +1,4 @@
-const { PORT = 5432 } = process.env;
+const { PORT = 5433 } = process.env;
 
 const app = require("./app");
 const listener = () => console.log(`Listening on Port ${PORT}!`);

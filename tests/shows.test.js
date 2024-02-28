@@ -4,7 +4,8 @@ const knex = require("../src/db/connection");
 const helpers = require("./test-helpers");
 
 describe("path /shows", () => {
-  const { testShows } = helpers.makeGoesEverOnFixtures();
+  const { testShows, testGenres, testShowsGenres } =
+    helpers.makeGoesEverOnFixtures();
 
   beforeAll(() => helpers.cleanTables(knex));
 
@@ -23,7 +24,9 @@ describe("path /shows", () => {
     });
 
     describe("given there are shows in the database", () => {
-      beforeEach(() => helpers.seedShowsTable(knex, testShows));
+      beforeEach(() =>
+        helpers.seedShowsTable(knex, testShows, testGenres, testShowsGenres),
+      );
 
       it("returns with 200 and an array of shows", async () => {
         const response = await request(app).get("/shows");
@@ -36,6 +39,7 @@ describe("path /shows", () => {
             show.show_description,
           );
           expect(response.body.data[idx].show_year).toBe(show.show_year);
+          expect(response.body.data[idx].genres).toEqual(show.genres);
         });
       });
     });
@@ -86,7 +90,9 @@ describe("path /shows", () => {
     });
 
     describe("given there are shows in the database", () => {
-      beforeEach(() => helpers.seedShowsTable(knex, testShows));
+      beforeEach(() =>
+        helpers.seedShowsTable(knex, testShows, testGenres, testShowsGenres),
+      );
       it("returns with 201 and the new show", async () => {
         const newShow = {
           show_name: "Succession",
@@ -115,7 +121,9 @@ describe("path /shows", () => {
     });
 
     describe("given there are shows in the database", () => {
-      beforeEach(() => helpers.seedShowsTable(knex, testShows));
+      beforeEach(() =>
+        helpers.seedShowsTable(knex, testShows, testGenres, testShowsGenres),
+      );
       it("returns with 200 and the show", async () => {
         const response = await request(app).get("/shows/1");
         expect(response.status).toBe(200);

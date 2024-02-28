@@ -19,4 +19,16 @@ module.exports = [
     show_description: `A complex saga of humans scattered on planets throughout the galaxy all living under the rule of the Galactic Empire.`,
     show_year: 2021,
   },
+  {
+    show_name: "Silo",
+    show_description:
+      "Men and women live in a giant silo underground with several regulations which they believe are in place to protect them from the toxic and ruined world on the surface.",
+    show_year: 2023,
+  },
+  {
+    show_name: "Constellation",
+    show_description:
+      "Jo returns to earth after a disaster in space and discovers that there are missing pieces in her life, so she sets out to expose the truth about the hidden secrets of space travel and recover what she has lost.",
+    show_year: 2024,
+  },
 ];
